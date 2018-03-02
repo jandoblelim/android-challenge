@@ -4,13 +4,12 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-
 import com.jandoblelim.androidchallengejanlim.api.ApiConfig;
 import com.jandoblelim.androidchallengejanlim.api.ApiModule;
 import com.jandoblelim.androidchallengejanlim.api.IApiAuthenticator;
+import com.jandoblelim.androidchallengejanlim.database.model.ApiHitCounter;
 import com.jandoblelim.androidchallengejanlim.database.model.DailyData;
-import com.jandoblelim.androidchallengejanlim.database.realm.RealmDailyDataRepository;
-import com.jandoblelim.androidchallengejanlim.database.realm.RealmDailyRepository;
+import com.jandoblelim.androidchallengejanlim.database.realm.RealmApiHitCounterRepository;
 import com.jandoblelim.androidchallengejanlim.services.DarkSkyService;
 
 import java.util.List;
@@ -25,7 +24,6 @@ public class App extends Application implements IApiAuthenticator {
 
     private IAppComponent mAppComponent;
     private static DailyData dailyData = null;
-    public static Integer API_HIT_COUNTER;
 
     @Inject
     ApiConfig mApiConfig;
@@ -34,8 +32,6 @@ public class App extends Application implements IApiAuthenticator {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        API_HIT_COUNTER = 0;
 
         //let's initialize the appComponent
         initializeAppComponent();
@@ -69,8 +65,16 @@ public class App extends Application implements IApiAuthenticator {
         return false;    }
 
     private void initRealmRepository() {
-        RealmDailyDataRepository.initialize(this);
-        RealmDailyRepository.initialize(this);
+        RealmApiHitCounterRepository.initialize(this);
+
+        //clear db
+        RealmApiHitCounterRepository.deleteAll();
+
+        //Initialize first count
+        ApiHitCounter apiHitCounter = new ApiHitCounter();
+        apiHitCounter.setId((long) 1);
+        apiHitCounter.setCounter(0);
+        RealmApiHitCounterRepository.add(apiHitCounter);
     }
 
     private void initializeAppComponent() {

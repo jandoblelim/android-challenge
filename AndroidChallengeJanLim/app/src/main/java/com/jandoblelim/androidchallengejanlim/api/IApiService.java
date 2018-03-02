@@ -12,6 +12,6 @@ import rx.Observable;
 
 public interface IApiService {
 
-    @GET("forecast/c63d1a62f0f56add8fff7deb5f217aac/37.8267,-122.4233")
+    @GET("forecast/d52ed8b07ea9f25967162f8c4ac200c9/37.8267,-122.4233")
     Call<ForecastResponse> getForecast();
 }

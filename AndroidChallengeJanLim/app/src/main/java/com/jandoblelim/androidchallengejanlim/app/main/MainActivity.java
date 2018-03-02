@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import com.jandoblelim.androidchallengejanlim.R;
 import com.jandoblelim.androidchallengejanlim.app.App;
+import com.jandoblelim.androidchallengejanlim.database.model.ApiHitCounter;
+import com.jandoblelim.androidchallengejanlim.database.realm.RealmApiHitCounterRepository;
 import com.jandoblelim.androidchallengejanlim.events.WeatherEvent;
 import com.squareup.otto.Subscribe;
 
@@ -52,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements IMainContract.Vie
         super.onResume();
         mMainPresenter.onResume();
 
-        String counter = String.format(getResources().getString(R.string.string_view_api_hit_counter), String.valueOf(App.API_HIT_COUNTER));
+        ApiHitCounter apiHitCounter = RealmApiHitCounterRepository.getApiHitCounterById(1);
+
+        String counter = String.format(getResources().getString(R.string.string_view_api_hit_counter), String.valueOf(apiHitCounter.getCounter()));
         mTextViewHitCounter.setText(counter);
     }
 
@@ -93,9 +97,13 @@ public class MainActivity extends AppCompatActivity implements IMainContract.Vie
     public void renderView(WeatherEvent weatherEvent) {
         mTextViewDate.setText(weatherEvent.getDate());
         mTextViewSummary.setText(weatherEvent.getSummary());
-        mTextViewTemp.setText(weatherEvent.getTemperature());
+        mTextViewTemp.setText(weatherEvent.getTemperature() + " F");
         mTextViewWindspeed.setText(weatherEvent.getWindspeed());
-        mTextViewHitCounter.setText(App.API_HIT_COUNTER);
+
+        ApiHitCounter apiHitCounter = RealmApiHitCounterRepository.getApiHitCounterById(1);
+
+        String counter = String.format(getResources().getString(R.string.string_view_api_hit_counter), String.valueOf(apiHitCounter.getCounter()));
+        mTextViewHitCounter.setText(counter);
     }
 
 }
