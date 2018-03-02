@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">AndroidChallengeJanLim</string>
+    <string name="app_name">Android Challenge (Jan Lim)</string>
+    <string name="text_view_apparent_temp">Feels like %1$s</string>
+    <string name="something_went_wrong">Something went wrong. Please try again.</string>
+    <string name="ok">Ok</string>
+    <string name="string_view_api_hit_counter">API Request Counter: %1$s</string>
+
 </resources>
